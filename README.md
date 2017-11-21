@@ -1,7 +1,7 @@
 glsb
 -
 
-It's a tool to hide and read messages within images,
+It's a tool to hide and read messages to/from images,
 applying least significant bit(lsb) technique.
 
 Installation

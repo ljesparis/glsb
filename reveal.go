@@ -6,6 +6,10 @@ import (
 	"strconv"
 )
 
+var (
+	messageNotFound = errors.New("Message Not Found =)")
+)
+
 // Extract message from image's pixels.
 // by default utf8 encoding is used.
 func revealMessage(img image.Image, conf *Configuration) (buff string, err error) {
@@ -53,10 +57,11 @@ func revealMessage(img image.Image, conf *Configuration) (buff string, err error
 	}
 
 end:
-	buff = conf.Encryption.Decrypt(buff)
-	if len(buff) == 0 {
+	if msgLen > 0 {
+		buff = conf.Encryption.Decrypt(buff)
+	} else {
 		buff = ""
-		err = errors.New("Message Not Found =)")
+		err = messageNotFound
 	}
 
 	return

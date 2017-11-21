@@ -40,7 +40,7 @@ Write a message within an image
 glsb --encryption xor --key "this is my key" write /path/to/image/src.png dst.png "Hello world"
 ```
 
-Read hiden message
+Read hidden message
 ```bash
 glsb --encryption xor --key "this is my key" read /path/to/image/dst.png
 ```

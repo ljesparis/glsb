@@ -23,7 +23,6 @@ Done!!
 
 Usage
 -
-
 #### Without enccryption
 Write a message within an image
 ```bash
@@ -48,7 +47,7 @@ glsb --encryption xor --key "this is my key" read /path/to/image/dst.png
 
 Formats Supported
 -
- ### Image
+### Image
  - [x] [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics)
  - [ ] [JPEG](https://en.wikipedia.org/wiki/JPEG)
  - [ ] [GIF](https://en.wikipedia.org/wiki/GIF)

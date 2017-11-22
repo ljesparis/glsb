@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"image"
-	"image/color"
 	"image/png"
 	"os"
 	"strconv"
@@ -40,35 +39,25 @@ func hideMessage(message, dst string, img image.Image, conf *Configuration) erro
 	}
 
 	nRGBA := toRGBA(img)
-	i := 3
 
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			c := nRGBA.RGBAAt(x, y) // image color
-			cr := color.RGBA{}      // result color
-			cr.A = c.A
 
-			for index+i > bMessageLength {
-				i--
+			if index+1 <= bMessageLength {
+				c.R = setLsb(c.R, bMessage[index])
 			}
 
-			if index+i <= bMessageLength {
-				bits := bMessage[index : index+i] // getting first `i` bits
-				if i >= 1 {
-					cr.R = setLsb(c.R, bits[0])
-				}
-
-				if i >= 2 {
-					cr.G = setLsb(c.G, bits[1])
-				}
-
-				if i == 3 {
-					cr.B = setLsb(c.B, bits[2])
-				}
+			if index+2 <= bMessageLength {
+				c.G = setLsb(c.G, bMessage[index+1])
 			}
 
-			nRGBA.SetRGBA(x, y, cr) // set new pixel color to RGBA object
-			index += i
+			if index+3 <= bMessageLength {
+				c.B = setLsb(c.B, bMessage[index+2])
+			}
+
+			nRGBA.SetRGBA(x, y, c) // set new pixel color to RGBA object
+			index += 3
 		}
 	}
 

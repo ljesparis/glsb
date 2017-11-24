@@ -21,13 +21,6 @@ func setLsb(n uint8, c uint8) (r uint8) {
 }
 
 func hideMessage(message, dst string, img image.Image, conf *Configuration) error {
-	dstW, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
-
-	defer dstW.Close()
-
 	message = conf.Encryption.Encrypt(message)
 	bMessage := bytes2Binary([]byte(fmt.Sprintf("%d%s", len(message), message)))
 	bMessageLength := len(bMessage)
@@ -60,6 +53,13 @@ func hideMessage(message, dst string, img image.Image, conf *Configuration) erro
 			index += 3
 		}
 	}
+
+	dstW, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+
+	defer dstW.Close()
 
 	err = png.Encode(dstW, nRGBA)
 	if err != nil {

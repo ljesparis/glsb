@@ -13,12 +13,19 @@ import (
 )
 
 var (
+	// default configuration
 	conf = defaultConfig
 )
 
 func throwError(m string) {
 	fmt.Println(m)
 	os.Exit(1)
+}
+
+func panicIfErr(err error) {
+	if err != nil {
+		throwError(err.Error())
+	}
 }
 
 // verify image format
@@ -68,31 +75,18 @@ func read(c *cli.Context) {
 	}
 
 	configureApp(c)
-
 	src := c.Args().Get(0)
 	err := checkImageFormat(src)
-	if err != nil {
-		throwError(err.Error())
-	}
-
+	panicIfErr(err)
 	i, err := openPngFile(src)
-	if err != nil {
-		throwError(err.Error())
-	}
-
+	panicIfErr(err)
 	message, err := revealMessage(i, conf)
-
-	if err != nil {
-		throwError(err.Error())
-	} else {
-		messageLength := len(message)
-
-		fmt.Printf(`Message Found! =).
+	panicIfErr(err)
+	messageLength := len(message)
+	fmt.Printf(`Message Found! =).
 Message Length: %d
 Message: %s
 `, messageLength, message)
-
-	}
 }
 
 func write(c *cli.Context) {
@@ -102,30 +96,16 @@ func write(c *cli.Context) {
 	}
 
 	configureApp(c)
-
 	args := c.Args()
 	src, dst, m := args.Get(0), args.Get(1), args.Get(2)
-
 	err := checkImageFormat(src)
-	if err != nil {
-		throwError(err.Error())
-	}
-
+	panicIfErr(err)
 	err = checkImageFormat(dst)
-	if err != nil {
-		throwError(err.Error())
-	}
-
+	panicIfErr(err)
 	i, err := openPngFile(src)
-	if err != nil {
-		throwError(err.Error())
-	}
-
+	panicIfErr(err)
 	err = hideMessage(m, dst, i, conf)
-	if err != nil {
-		throwError(err.Error())
-	}
-
+	panicIfErr(err)
 	fmt.Println("Message successfully hidden")
 }
 
